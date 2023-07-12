@@ -1,7 +1,6 @@
 package com.app.musicplayer.presentation.screen.home
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -23,12 +22,14 @@ fun FeaturedContentCardRow(contentList : List<FeaturedContent>){
         modifier = Modifier
     ){
         this.items(contentList){
-            ImageLoader(url = it.imageUrl,
+            ImageLoader(
+                url = it.imageUrl,
                 modifier = Modifier
                     .fillMaxWidth().height(200.dp)
                     .clip(RoundedCornerShape(10))
                     .clickable {},
-                contentDescription = "Featured Contents")
+                contentDescription = "Featured Contents"
+            )
         }
     }
 
