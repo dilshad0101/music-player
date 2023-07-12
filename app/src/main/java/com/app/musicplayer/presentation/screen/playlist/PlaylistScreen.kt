@@ -4,26 +4,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.app.musicplayer.R
 import com.app.musicplayer.data.track.Album
-import com.app.musicplayer.data.track.Track
 import com.app.musicplayer.presentation.navigation.BottomNavBar
+import com.app.musicplayer.presentation.navigation.NavigationRoute
 import com.app.musicplayer.presentation.theme.Spacing
 import com.app.musicplayer.presentation.utility.ImageLoader
-import com.app.musicplayer.presentation.utility.TrackCard
 import okio.utf8Size
-import kotlin.random.Random
 
 @Composable
 fun PlaylistScreen(
@@ -35,7 +31,18 @@ fun PlaylistScreen(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.secondary,
         bottomBar = {
-            BottomNavBar(navController = navController)
+
+            Column(
+                modifier = Modifier.background(
+                    brush = Brush.verticalGradient(
+                        0f to Color.Transparent,
+                        Float.POSITIVE_INFINITY to Color(0xFC000000)
+                    )
+                )
+            ){
+                BottomNavBar(navController)
+            }
+
         }
     ) {
         Column(
@@ -47,7 +54,7 @@ fun PlaylistScreen(
         ) {
             LazyColumn() {
                 this.item{
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { navController.navigate(NavigationRoute.HomeScreen.route) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrowleft),
                             contentDescription = "Back",
@@ -120,7 +127,13 @@ fun PlaylistScreen(
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
                         playlist.tracks.forEach {track ->
-                            TrackCard(track = track)
+                            TrackCard(
+                                track = track,
+                                onClick = {clickedTrack ->
+                                    navController.navigate(
+                                        NavigationRoute.PlayerScreen.route + "/${clickedTrack.id}")
+                                }
+                                )
                         }
                     }
                 }

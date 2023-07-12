@@ -1,4 +1,4 @@
-package com.app.musicplayer.presentation.utility
+package com.app.musicplayer.presentation.screen.playlist
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,13 +13,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.unit.dp
 import com.app.musicplayer.data.track.Track
+import com.app.musicplayer.presentation.utility.ImageLoader
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrackCard(
-    track: Track
+    track: Track,
+    onClick : (Track)-> Unit
 ){
     Card(
         elevation = CardDefaults.cardElevation(0.dp),
+        onClick = {onClick.invoke(track)},
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.secondary

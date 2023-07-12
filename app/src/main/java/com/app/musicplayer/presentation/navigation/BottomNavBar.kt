@@ -31,12 +31,7 @@ fun BottomNavBar(
         modifier = Modifier
             .padding(horizontal = 25.dp)
             .height(80.dp)
-            .background(
-                brush = Brush.verticalGradient(
-                    0f to Color.Transparent,
-                    Float.POSITIVE_INFINITY to Color(0xFC000000)
-                )
-            )
+
 
     ) {
 

@@ -23,6 +23,10 @@ class FetchTrackViewModel @Inject constructor(
             trackList.value = trackRepository.getTracks()
         }
     }
+
+    fun findTrack(id: String): Track?{
+        return trackList.value.find { it.id == id }
+    }
     fun getAlbum(find:String?=null): List<Album> {
         val tracks: List<Track> = trackList.value
         // Group tracks by album title
@@ -47,13 +51,14 @@ class FetchTrackViewModel @Inject constructor(
                 title = albumTitle,
                 artist = mostCommonArtists.joinToString(", "),
                 tracks = albumTracks,
-                coverArtUrl = coverArtUrlCountMap ?: ""
+                coverArtUrl = coverArtUrlCountMap ?: "",
+                id = albumTracks[0].albumId
             )
         }
         return if (find == null){
            result
         }else {
-            return result.filter { it.title == find }
+            return result.filter { it.id == find }
         }
     }
 

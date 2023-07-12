@@ -30,19 +30,19 @@ fun HomeScreen(
         Section(
             title = "Recently Played",
             albums = listOf(
-                Album(
+                Album("12121",
                     title = "Dark Lemo Tapes",
                     artist = "Drake, Lil Baby",
                     tracks = listOf(),
                     coverArtUrl = "https://www.theglobeandmail.com/resizer/qqWRUfhhRCGq_uGzVZgCdcwR_0U=/1200x0/filters:quality(80):format(jpeg)/arc-anglerfish-tgam-prod-tgam.s3.amazonaws.com/public/3YV2PTJAVFGCVJK5IC6RJYY6EA"
                 ),
-                Album(
+                Album("121298",
                     title = "Dark Lemo Tapes",
                     artist = "Drake, Lil Baby",
                     tracks = listOf(),
                     coverArtUrl = "https://images.squarespace-cdn.com/content/v1/53b6eb62e4b06e0feb2d8e86/1557342351849-4N9P5EJJCL0DJMDTP0YI/SamSpratt_Logic_ConfessionsOfADangerousMind_album_artwork.jpg"
                 ),
-                Album(
+                Album("5652",
                     title = "Dark Lemo Tapes",
                     artist = "Drake, Lil Baby",
                     tracks = listOf(),
@@ -54,19 +54,19 @@ fun HomeScreen(
         Section(
             title = "Made For You",
             albums = listOf(
-                Album(
+                Album("899",
                     title = "Dark Lemo Tapes",
                     artist = "Drake, Lil Baby",
                     tracks = listOf(),
                     coverArtUrl = "https://www.theglobeandmail.com/resizer/qqWRUfhhRCGq_uGzVZgCdcwR_0U=/1200x0/filters:quality(80):format(jpeg)/arc-anglerfish-tgam-prod-tgam.s3.amazonaws.com/public/3YV2PTJAVFGCVJK5IC6RJYY6EA"
                 ),
-                Album(
+                Album("22",
                     title = "Dark Lemo Tapes",
                     artist = "Drake, Lil Baby",
                     tracks = listOf(),
                     coverArtUrl = "https://images.squarespace-cdn.com/content/v1/53b6eb62e4b06e0feb2d8e86/1557342351849-4N9P5EJJCL0DJMDTP0YI/SamSpratt_Logic_ConfessionsOfADangerousMind_album_artwork.jpg"
                 ),
-                Album(
+                Album("12",
                     title = "Dark Lemo Tapes",
                     artist = "Drake, Lil Baby",
                     tracks = listOf(),
@@ -80,7 +80,16 @@ fun HomeScreen(
     Scaffold(
         containerColor = Color.Black,
         bottomBar = {
-            BottomNavBar(navController)
+            Column(
+                modifier = Modifier.background(
+                    brush = Brush.verticalGradient(
+                        0f to Color.Transparent,
+                        Float.POSITIVE_INFINITY to Color(0xFC000000)
+                    )
+                )
+            ){
+                BottomNavBar(navController)
+            }
         }
     ) {
         LazyColumn(modifier = Modifier.padding()) {

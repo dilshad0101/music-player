@@ -48,7 +48,7 @@ fun AlbumRow(
                             .height(120.dp)
                             .width(120.dp)
                             .clip(RoundedCornerShape(10))
-                            .clickable{onClick.invoke(it.title)}
+                            .clickable{onClick.invoke(it.id)}
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
