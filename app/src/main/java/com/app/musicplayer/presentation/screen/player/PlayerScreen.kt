@@ -1,5 +1,6 @@
 package com.app.musicplayer.presentation.screen.player
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -10,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -28,11 +28,22 @@ fun PlayerScreen(
     navController: NavController,
     surfaceColor: Brush,
     track: Track,
-    playlistID: String
+    playlistID: String,
+    onPlay: () -> Unit,
+    onPause:() -> Unit,
+    isPlaying: Boolean,
+    playbackPosition : Long,
+    onSeek: (Long) -> Unit,
+    max: Long
 ){
     var isLyricVisible by remember{ mutableStateOf(false) }
+    var sliderValue by remember {
+        mutableStateOf(playbackPosition.toFloat())
+    }
     Box(
-        modifier = Modifier.fillMaxSize().background(surfaceColor)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(surfaceColor)
     ) {
         LazyColumn(
             modifier = Modifier.padding(22.dp),
@@ -42,7 +53,9 @@ fun PlayerScreen(
             this.item{
                 IconButton(onClick = {
                     navController.navigate(NavigationRoute.PlaylistScreen.route+"/$playlistID") },
-                    modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.Start)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentWidth(Alignment.Start)
                     ) {
                     Icon(
                         painter = painterResource(id = R.drawable.arrowleft),
@@ -56,7 +69,8 @@ fun PlayerScreen(
                         ImageLoader(
                             url = track.coverArtUrl,
                             contentDescription = "cover art of song " + track.title,
-                            modifier = Modifier.clip(RoundedCornerShape(10))
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(10))
                                 .clickable {
                                     isLyricVisible = true
                                 }
@@ -77,14 +91,35 @@ fun PlayerScreen(
                         style = MaterialTheme.typography.displayLarge
                     )
                     Text(
-                        track.title,
+                        track.artist,
                         style = MaterialTheme.typography.displaySmall
                     )
                     Spacer(modifier = Modifier.height(30.dp))
-                    Row(verticalAlignment = CenterVertically) {
-                        IconButton(onClick = { /*TODO*/ }) {
-                        }
-                    }
+                    SliderBar(
+                        sliderValue,
+                        onValueChange = {value->
+                            sliderValue = value
+                            Log.wtf("TAG1212",value.toString()+sliderValue.toLong())
+                        },
+                        onValueChangeFinished = {
+                            onSeek.invoke(sliderValue.toLong())
+
+                        },
+                        max = max
+                        )
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    PlayerControllerRow(
+                        onPlaybackStateChange = {attemptedToPause ->
+                            if (attemptedToPause){
+                                onPause.invoke()
+                            }else{
+                                onPlay.invoke()
+                            }
+
+                        },
+                        isPlaying = isPlaying
+                    )
                 }
             }
         }
