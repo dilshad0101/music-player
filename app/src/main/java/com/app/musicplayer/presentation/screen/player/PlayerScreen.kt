@@ -1,6 +1,5 @@
 package com.app.musicplayer.presentation.screen.player
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -29,17 +28,14 @@ fun PlayerScreen(
     surfaceColor: Brush,
     track: Track,
     playlistID: String,
-    onPlay: () -> Unit,
-    onPause:() -> Unit,
-    isPlaying: Boolean,
-    playbackPosition : Long,
-    onSeek: (Long) -> Unit,
-    max: Long
+    onPlaybackStateChange:(Boolean) -> Unit,
+    isPlaying: () -> Boolean,
+    playbackPosition : () -> Long,
+    onSeek: (Float) -> Unit,
+    totalDuration: () -> Long
 ){
     var isLyricVisible by remember{ mutableStateOf(false) }
-    var sliderValue by remember {
-        mutableStateOf(playbackPosition.toFloat())
-    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -96,28 +92,16 @@ fun PlayerScreen(
                     )
                     Spacer(modifier = Modifier.height(30.dp))
                     SliderBar(
-                        sliderValue,
+                        playbackPosition = playbackPosition,
                         onValueChange = {value->
-                            sliderValue = value
-                            Log.wtf("TAG1212",value.toString()+sliderValue.toLong())
+                            onSeek.invoke(value)
                         },
-                        onValueChangeFinished = {
-                            onSeek.invoke(sliderValue.toLong())
-
-                        },
-                        max = max
+                        totalDuration = totalDuration
                         )
                     Spacer(modifier = Modifier.height(32.dp))
 
                     PlayerControllerRow(
-                        onPlaybackStateChange = {attemptedToPause ->
-                            if (attemptedToPause){
-                                onPause.invoke()
-                            }else{
-                                onPlay.invoke()
-                            }
-
-                        },
+                        onPlaybackStateChange = { onPlaybackStateChange.invoke(it) },
                         isPlaying = isPlaying
                     )
                 }

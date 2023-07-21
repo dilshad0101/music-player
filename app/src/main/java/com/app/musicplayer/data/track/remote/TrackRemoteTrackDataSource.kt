@@ -13,7 +13,7 @@ class TrackRemoteTrackDataSource @Inject constructor() : TrackDataSource {
                 artist = "Artist 1",
                 album = "Album A",
                 coverArtUrl = "https://www.theglobeandmail.com/resizer/qqWRUfhhRCGq_uGzVZgCdcwR_0U=/1200x0/filters:quality(80):format(jpeg)/arc-anglerfish-tgam-prod-tgam.s3.amazonaws.com/public/3YV2PTJAVFGCVJK5IC6RJYY6EA",
-                trackUrl = "https://download.samplelib.com/mp3/sample-9s.mp3",
+                trackUrl = "https://drive.google.com/u/1/uc?id=1h8rZ0bIodqVmaHN9j2yIq2RBIJNaIvP0&export=download",
                 lyricUrl = "URL_OF_LYRICS_1",
                 albumId = "1"
             ),

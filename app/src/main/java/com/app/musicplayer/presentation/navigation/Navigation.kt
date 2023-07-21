@@ -8,8 +8,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.Player
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,7 +28,6 @@ fun Navigation(){
     val navController = rememberNavController()
     val trackViewModel: FetchTrackViewModel = hiltViewModel()
     val featuredContentViewModel: FeaturedContentViewModel = hiltViewModel()
-    val playerViewModel : MediaPlayerViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -62,6 +61,32 @@ fun Navigation(){
         composable(NavigationRoute.PlayerScreen.route +"/{ID}",
             arguments = listOf(navArgument("ID") {type = NavType.StringType })
         ){ navBackStackEntry ->
+            val playerViewModel : MediaPlayerViewModel = hiltViewModel()
+
+            val player = playerViewModel.player
+            var totalDuration by remember{
+                mutableStateOf(0L)
+            }
+            var isPlaying by remember{ mutableStateOf(false) }
+
+            DisposableEffect(Unit){
+                val listener = object : Player.Listener{
+                    override fun onEvents(player: Player, events: Player.Events) {
+                        super.onEvents(player, events)
+                        totalDuration = player.duration.coerceAtLeast(0L)
+                    }
+
+                }
+                player.addListener(listener)
+
+                onDispose {
+                    player.removeListener(listener)
+                    player.release()
+                }
+
+
+            }
+
             val value = navBackStackEntry.arguments?.getString("ID")
             if (value !=null){
                 val track = trackViewModel.findTrack(value)
@@ -72,15 +97,17 @@ fun Navigation(){
                         surfaceColor = gradient,
                         track = track,
                         playlistID = track.albumId,
-                        onPlay = {
-                            playerViewModel.play()
+                        onPlaybackStateChange = {attemptedToPause ->
+                            if (attemptedToPause){
+                                playerViewModel.pause()
+                            }else{
+                                playerViewModel.play()
+                            }
+                            isPlaying = isPlaying.not()
                         },
-                        isPlaying = playerViewModel.isPlaying(),
-                        onPause = {
-                            playerViewModel.pause()
-                        },
-                        playbackPosition = playerViewModel.playbackPosition,
-                        max = playerViewModel.maxDuration(),
+                        isPlaying = { isPlaying },
+                        playbackPosition = { playerViewModel.playbackPosition.value },
+                        totalDuration = { totalDuration },
                         onSeek = {
                             playerViewModel.onSeek(it)
                         }

@@ -19,10 +19,10 @@ import com.app.musicplayer.R
 @Composable
 fun PlayerControllerRow(
     onPlaybackStateChange:(Boolean) -> Unit,
-    isPlaying: Boolean
+    isPlaying: () -> Boolean
 ){
-    var isPlayingState by remember{
-        mutableStateOf(isPlaying)
+    var isPlayingState = remember(isPlaying()){
+        isPlaying()
     }
     val defaultModifier = Modifier
 

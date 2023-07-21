@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -18,20 +17,23 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SliderBar(value : Float,
-              onValueChange: (Float) -> Unit,
-              max: Long,
-              onValueChangeFinished: () -> Unit
+fun SliderBar(
+    onValueChange: (Float) -> Unit,
+    totalDuration: () -> Long,
+    playbackPosition: () -> Long,
               ){
-    val valueRange = 0f..max.toFloat()
+    val duration = remember(totalDuration()) { totalDuration() }
+
+    val trackTime = remember(playbackPosition()) { playbackPosition() }
+
+    val valueRange = 0f..duration.toFloat()
+
     Slider(
-        value = value,
+        steps = 30,
+        value = trackTime.toFloat(),
         valueRange = valueRange,
         onValueChange = {valueChange->
             onValueChange.invoke(valueChange)},
-        onValueChangeFinished = {
-            onValueChangeFinished.invoke()
-        },
         colors = SliderDefaults.colors(
             thumbColor = Color.Transparent,
             inactiveTrackColor = Color(0x66FAFAFA),
