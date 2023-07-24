@@ -18,15 +18,12 @@ class FetchTrackViewModel @Inject constructor(
         getTracks()
     }
 
-    fun getTracks(){
+    private fun getTracks(){
         viewModelScope.launch {
             trackList.value = trackRepository.getTracks()
         }
     }
 
-    fun findTrack(id: String): Track?{
-        return trackList.value.find { it.id == id }
-    }
     fun getAlbum(find:String?=null): List<Album> {
         val tracks: List<Track> = trackList.value
         // Group tracks by album title

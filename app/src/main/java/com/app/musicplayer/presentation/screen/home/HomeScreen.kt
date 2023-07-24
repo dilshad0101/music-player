@@ -19,7 +19,8 @@ import com.app.musicplayer.presentation.navigation.NavigationRoute
 fun HomeScreen(
     navController: NavController,
     featuredContents: List<FeaturedContent>,
-    albums: List<Album>
+    albums: List<Album>,
+    onAlbumClick: (Album) -> Unit
 ){
     val mockList = listOf<Section>(
         Section(
@@ -110,9 +111,10 @@ fun HomeScreen(
                         AlbumRow(
                             title = section.title,
                             albumList = section.albums,
-                            onClick = {
-                                navController.navigate(NavigationRoute.PlaylistScreen.route + "/${it}")
-                            }
+                            onClick = { onAlbumClick.invoke(it) }
+//                            onClick = {
+//                                navController.navigate(NavigationRoute.PlaylistScreen.route + "/${it}")
+//                            }
                             )
                     }
                 }

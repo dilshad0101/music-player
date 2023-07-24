@@ -12,7 +12,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -25,7 +27,8 @@ import com.app.musicplayer.presentation.utility.ImageLoader
 @Composable
 fun PlayerScreen(
     navController: NavController,
-    surfaceColor: Brush,
+    lightGradient: Brush,
+    darkGradient: Brush,
     track: Track,
     playlistID: String,
     onPlaybackStateChange:(Boolean) -> Unit,
@@ -39,7 +42,7 @@ fun PlayerScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(surfaceColor)
+            .background(darkGradient)
     ) {
         LazyColumn(
             modifier = Modifier.padding(22.dp),
@@ -48,7 +51,7 @@ fun PlayerScreen(
         ){
             this.item{
                 IconButton(onClick = {
-                    navController.navigate(NavigationRoute.PlaylistScreen.route+"/$playlistID") },
+                    navController.navigateUp() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentWidth(Alignment.Start)
@@ -62,19 +65,33 @@ fun PlayerScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 AnimatedContent(targetState = isLyricVisible) {state: Boolean ->
                     if (!state){
-                        ImageLoader(
-                            url = track.coverArtUrl,
-                            contentDescription = "cover art of song " + track.title,
+                        Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(10))
-                                .clickable {
-                                    isLyricVisible = true
-                                }
-                                .size(300.dp)
+                                .shadow(elevation = 4.dp,
+                                    spotColor = Color(0x40000000),
+                                    ambientColor = Color(0x40000000))
+                        ){
+                            ImageLoader(
+                                url = track.coverArtUrl,
+                                contentDescription = "cover art of song " + track.title,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(10))
+                                    .clickable {
+                                        isLyricVisible = true
+                                    }
+                                    .size(300.dp)
 
                             )
+                        }
+
+
                     }else{
-                        Text(text = "Lyrics HEHEHE")
+                        LyricsBox(
+                            brush = lightGradient,
+                            onClick = {
+                                isLyricVisible = false
+                            }
+                            )
                     }
                 }
                 Spacer(modifier = Modifier.height(30.dp))

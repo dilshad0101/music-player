@@ -1,26 +1,25 @@
 package com.app.musicplayer.data.player
 
+import android.app.Application
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import com.app.musicplayer.data.track.Album
+import com.app.musicplayer.data.track.Track
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 @HiltViewModel
 class MediaPlayerViewModel @Inject constructor(
@@ -29,25 +28,51 @@ class MediaPlayerViewModel @Inject constructor(
 
     var playbackPosition = mutableStateOf<Long>(0)
     private val playerPositionTracker= PlayerPositionTracker()
+    var currentTrack : MutableState<Track?> = mutableStateOf(null)
+    var currentQueue: MutableState<Album?> = mutableStateOf(null)
+
+
 
     init {
         player.prepare()
+    }
+
+    fun updatePlaybackPosition(){
         viewModelScope.launch {
             while (true){
                 updatePosition()
+                Log.d("TAG222",playbackPosition.value.toString()+ player.playbackSuppressionReason)
                 playbackPosition.value = player.currentPosition
-                delay(1.seconds/20)
+                delay(1.seconds/10)
             }
-
         }
     }
 
+    fun setQueue(album: Album){
+        val mediaItemList = mutableListOf<MediaItem>()
+        for (track in album.tracks){
+            var uri = track.trackUrl
+            val mediaItem: MediaItem = MediaItem.fromUri(uri)
+            mediaItemList.add(mediaItem)
+        }
+        player.setMediaItems(mediaItemList)
+    }
+    fun moveToNext(){
+        if(currentQueue.value != null){
+            val nextTrackIndex = 1 + currentQueue.value!!.tracks.indexOf(currentTrack.value)
+            val nextTrack = currentQueue.value!!.tracks.elementAtOrNull(nextTrackIndex)
+            if (nextTrack != null){
+                currentTrack.value = nextTrack
+            }
+        }
+
+    }
 
     fun onSeek(newPosition:Float){
         Log.wtf("TAG121", "Seek: $newPosition Total: ${player.duration.toFloat()}" )
         player.seekTo(newPosition.toLong())
     }
-    fun updatePosition(player: Player = this.player) {
+    private fun updatePosition(player: Player = this.player) {
         val handlerUpdatePosition = playerPositionTracker.handlerUpdatePosition
         val runnableUpdatePosition = playerPositionTracker.runnableUpdatePosition
         val playerPositionListener = playerPositionTracker.playerPositionListener
@@ -67,19 +92,19 @@ class MediaPlayerViewModel @Inject constructor(
         else if (playbackState != Player.STATE_ENDED && playbackState != Player.STATE_IDLE)
             handlerUpdatePosition.postDelayed(runnableUpdatePosition, MAX_UPDATE_INTERVAL_MS)
 
-
     }
     fun setTrack(uri: Uri){
         player.setMediaItem(MediaItem.fromUri(uri))
     }
     fun play(){
+        Log.wtf("TAG1122",currentQueue.value.toString() + currentTrack.value.toString())
         player.play()
     }
 
     fun pause(){
         player.pause()
     }
-    
+
     override fun onCleared() {
         super.onCleared()
         player.release()
@@ -91,7 +116,7 @@ private const val MAX_UPDATE_INTERVAL_MS: Long = 1000
 
 class PlayerPositionTracker {
 
-    val handlerUpdatePosition =                                                                                                                                                                                                                                                                                                                                                                                                                                                  Handler(Looper.getMainLooper())
+    val handlerUpdatePosition = Handler(Looper.getMainLooper())
     val runnableUpdatePosition = Runnable { updatePosition() }
 
     var player: Player? = null

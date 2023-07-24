@@ -19,7 +19,7 @@ import com.app.musicplayer.presentation.utility.ImageLoader
 fun AlbumRow(
     title: String,
     albumList: List<Album>,
-    onClick: (String) -> Unit
+    onClick: (Album) -> Unit
 ){
     Column(
         modifier =
@@ -48,7 +48,7 @@ fun AlbumRow(
                             .height(120.dp)
                             .width(120.dp)
                             .clip(RoundedCornerShape(10))
-                            .clickable{onClick.invoke(it.id)}
+                            .clickable{onClick.invoke(it)}
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 

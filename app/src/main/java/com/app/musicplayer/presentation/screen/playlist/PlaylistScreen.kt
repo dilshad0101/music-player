@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.app.musicplayer.R
 import com.app.musicplayer.data.track.Album
+import com.app.musicplayer.data.track.Track
 import com.app.musicplayer.presentation.navigation.BottomNavBar
 import com.app.musicplayer.presentation.navigation.NavigationRoute
 import com.app.musicplayer.presentation.theme.Spacing
@@ -24,7 +25,8 @@ import okio.utf8Size
 @Composable
 fun PlaylistScreen(
     playlist: Album,
-    navController: NavController
+    navController: NavController,
+    onClickInTrack: (Track) -> Unit
 ){
 
     Scaffold(
@@ -130,8 +132,7 @@ fun PlaylistScreen(
                             TrackCard(
                                 track = track,
                                 onClick = {clickedTrack ->
-                                    navController.navigate(
-                                        NavigationRoute.PlayerScreen.route + "/${clickedTrack.id}")
+                                    onClickInTrack.invoke(clickedTrack)
                                 }
                                 )
                         }
