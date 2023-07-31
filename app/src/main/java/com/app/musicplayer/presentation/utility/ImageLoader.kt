@@ -20,7 +20,7 @@ import java.net.URL
 fun ImageLoader(url: String,
                 modifier: Modifier = Modifier,
                 contentDescription: String,
-                quality: FilterQuality = FilterQuality.High,
+                quality: FilterQuality = FilterQuality.Low,
                 ){
     val context = LocalContext.current
     AsyncImage(

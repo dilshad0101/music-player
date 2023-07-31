@@ -19,7 +19,9 @@ import com.app.musicplayer.R
 @Composable
 fun PlayerControllerRow(
     onPlaybackStateChange:(Boolean) -> Unit,
-    isPlaying: () -> Boolean
+    isPlaying: () -> Boolean,
+    onNext: ()-> Unit,
+    onPrevious: () -> Unit
 ){
     var isPlayingState = remember(isPlaying()){
         isPlaying()
@@ -34,7 +36,6 @@ fun PlayerControllerRow(
         ) {
         IconButton(
             onClick = {
-
             },
             modifier = defaultModifier
         ) {
@@ -47,7 +48,7 @@ fun PlayerControllerRow(
 
         IconButton(
             onClick = {
-
+                      onPrevious.invoke()
             },
             modifier = defaultModifier
         ) {
@@ -97,7 +98,7 @@ fun PlayerControllerRow(
         }
         IconButton(
             onClick = {
-
+                      onNext.invoke()
             },
             modifier = defaultModifier
         ) {

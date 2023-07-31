@@ -35,7 +35,9 @@ fun PlayerScreen(
     isPlaying: () -> Boolean,
     playbackPosition : () -> Long,
     onSeek: (Float) -> Unit,
-    totalDuration: () -> Long
+    totalDuration: () -> Long,
+    onNext: () -> Unit,
+    onPrevious: () -> Unit
 ){
     var isLyricVisible by remember{ mutableStateOf(false) }
 
@@ -119,7 +121,9 @@ fun PlayerScreen(
 
                     PlayerControllerRow(
                         onPlaybackStateChange = { onPlaybackStateChange.invoke(it) },
-                        isPlaying = isPlaying
+                        isPlaying = isPlaying,
+                        onNext = onNext,
+                        onPrevious = onPrevious
                     )
                 }
             }

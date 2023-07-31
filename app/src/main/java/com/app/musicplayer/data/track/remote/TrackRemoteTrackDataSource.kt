@@ -9,21 +9,21 @@ class TrackRemoteTrackDataSource @Inject constructor() : TrackDataSource {
         return listOf(
             Track(
                 id = "1",
-                title = "Track 1",
-                artist = "Artist 1",
-                album = "Album A",
-                coverArtUrl = "https://www.theglobeandmail.com/resizer/qqWRUfhhRCGq_uGzVZgCdcwR_0U=/1200x0/filters:quality(80):format(jpeg)/arc-anglerfish-tgam-prod-tgam.s3.amazonaws.com/public/3YV2PTJAVFGCVJK5IC6RJYY6EA",
-                trackUrl = "https://drive.google.com/u/1/uc?id=1h8rZ0bIodqVmaHN9j2yIq2RBIJNaIvP0&export=download",
+                title = "500lbs",
+                artist = "Lil Tecca",
+                album = "500lbs",
+                coverArtUrl = "https://drive.google.com/u/1/uc?id=1G47jgsMSn5N2N4lXgrXl0pEIQjb-ox6X&export=download",
+                trackUrl = "https://drive.google.com/u/1/uc?id=1XANDXBWCADuMff2EnvXtnEv4y13m9Ue1&export=download",
                 lyricUrl = "URL_OF_LYRICS_1",
                 albumId = "1"
             ),
             Track(
                 id = "2",
-                title = "Track 2",
-                artist = "Artist 2",
-                album = "Album A",
-                coverArtUrl = "https://www.theglobeandmail.com/resizer/qqWRUfhhRCGq_uGzVZgCdcwR_0U=/1200x0/filters:quality(80):format(jpeg)/arc-anglerfish-tgam-prod-tgam.s3.amazonaws.com/public/3YV2PTJAVFGCVJK5IC6RJYY6EA",
-                trackUrl = "https://download.samplelib.com/mp3/sample-9s.mp3",
+                title = "War Bout It",
+                artist = "Lil Durk",
+                album = "Almost Healed",
+                coverArtUrl = "https://drive.google.com/u/1/uc?id=1toWVHHz1pCFBD2OtMb90YNk7x7nkQ55Y&export=download",
+                trackUrl = "https://drive.google.com/u/1/uc?id=1OyrhXV6KUAlCslclpL1Bssu-rnCtcqJB&export=download",
                 lyricUrl = "URL_OF_LYRICS_2",
                 albumId = "1"
             ),

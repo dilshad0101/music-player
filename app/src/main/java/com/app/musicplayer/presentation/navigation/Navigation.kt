@@ -2,16 +2,19 @@ package com.app.musicplayer.presentation.navigation
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -20,7 +23,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.app.musicplayer.data.featuredContent.FeaturedContentViewModel
-import com.app.musicplayer.data.player.MediaPlayerViewModel
+import com.app.musicplayer.player.MediaPlayerViewModel
+import com.app.musicplayer.data.track.Album
 import com.app.musicplayer.data.track.FetchTrackViewModel
 import com.app.musicplayer.presentation.screen.home.HomeScreen
 import com.app.musicplayer.presentation.screen.player.PlayerScreen
@@ -39,29 +43,10 @@ fun Navigation(
     val featuredContentViewModel: FeaturedContentViewModel = hiltViewModel()
     var isPlaying by remember{ mutableStateOf(false) }
     val player = playerViewModel.player
-    var totalDuration by remember{
-        mutableStateOf(0L)
-    }
+    val totalDuration = playerViewModel.totalDuration
     val track = playerViewModel.currentTrack.value
     val albumValue = playerViewModel.currentQueue.value
 
-    LaunchedEffect(Unit){
-        val listener = object : Player.Listener{
-            override fun onEvents(player: Player, events: Player.Events) {
-                super.onEvents(player, events)
-                totalDuration = player.duration.coerceAtLeast(0L)
-            }
-
-        }
-        player.addListener(listener)
-
-
-
-    }
-
-    LaunchedEffect(Unit){
-        playerViewModel.updatePlaybackPosition()
-    }
     NavHost(
         navController = navController,
         startDestination = NavigationRoute.HomeScreen.route
@@ -80,14 +65,14 @@ fun Navigation(
         composable(
             NavigationRoute.PlaylistScreen.route,
             ){
-
             if (albumValue != null){
                 PlaylistScreen(
                     playlist = albumValue,
                     navController = navController,
                     onClickInTrack = {
-                        playerViewModel.setTrack(Uri.parse(it.trackUrl))
                         playerViewModel.currentTrack.value = it
+                        playerViewModel.setQueue(albumValue)
+                        playerViewModel.setTrack(it.id)
                         navController.navigate(NavigationRoute.PlayerScreen.route)
                     }
                 )
@@ -99,9 +84,15 @@ fun Navigation(
         }
 
         composable(NavigationRoute.PlayerScreen.route
-//            )
         ){
             if (track!=null){
+                LaunchedEffect(track){
+                    playerViewModel.updatePlaybackPosition()
+                    if (player.playbackState == Player.STATE_IDLE){
+                        player.prepare()
+                    }
+                }
+
                 val darkGradient = dynamicGradient(subjectUrl = track.coverArtUrl)
                 val lightGradient = dynamicGradient(
                     subjectUrl = track.coverArtUrl,
@@ -114,17 +105,26 @@ fun Navigation(
                     playlistID = track.albumId,
                     onPlaybackStateChange = {attemptedToPause ->
                         if (attemptedToPause){
-                            playerViewModel.pause()
+                            if (player.isPlaying){
+                                playerViewModel.pause()
+                            }else{
+                                player.stop() }
                         }else{
-                            playerViewModel.play()
+                           playerViewModel.play()
                         }
                         isPlaying = isPlaying.not()
                     },
                     isPlaying = { isPlaying },
                     playbackPosition = { playerViewModel.playbackPosition.value },
-                    totalDuration = { totalDuration },
+                    totalDuration = { totalDuration.value },
                     onSeek = {
                         playerViewModel.onSeek(it)
+                    },
+                    onNext = {
+                        playerViewModel.moveToNext(track.id)
+                    },
+                    onPrevious = {
+                        playerViewModel.moveToPrevious(track.id)
                     }
                 )
 

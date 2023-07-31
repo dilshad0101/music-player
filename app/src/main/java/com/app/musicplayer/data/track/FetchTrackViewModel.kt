@@ -30,25 +30,26 @@ class FetchTrackViewModel @Inject constructor(
         val tracksByAlbum = tracks.groupBy { it.album }
 
         // Find the two most common artists
-        val artistCountMap = tracks.groupingBy { it.artist }
-            .eachCount()
-            .toList()
-            .sortedByDescending { it.second }
-        val mostCommonArtists = artistCountMap.take(2).map { it.first }
+        val artistCountMap:(List<Track>) -> List<Pair<String,Int>> = { tracksInAlbum ->
+            tracksInAlbum.groupingBy { it.artist }
+                .eachCount()
+                .toList()
+                .sortedByDescending { it.second }}
+        val mostCommonArtists:(List<Track>) -> List<String> = {tracksInAlbum -> artistCountMap.invoke(tracksInAlbum).take(2).map { it.first }}
 
         // Find the most common cover art URL
-        val coverArtUrlCountMap = tracks.groupingBy { it.coverArtUrl }
-            .eachCount()
-            .toList()
-            .maxByOrNull { it.second }
-            ?.first
+        val coverArtUrlCountMap:(List<Track>) -> String?  = {tracksInAlbum ->
+            tracksInAlbum.groupingBy { it.coverArtUrl }
+                .eachCount()
+                .toList()
+                .maxByOrNull { it.second }?.first}
 
         val result = tracksByAlbum.map { (albumTitle, albumTracks) ->
             Album(
                 title = albumTitle,
-                artist = mostCommonArtists.joinToString(", "),
+                artist = mostCommonArtists.invoke(albumTracks).joinToString(", "),
                 tracks = albumTracks,
-                coverArtUrl = coverArtUrlCountMap ?: "",
+                coverArtUrl = coverArtUrlCountMap.invoke(albumTracks) ?: "",
                 id = albumTracks[0].albumId
             )
         }
