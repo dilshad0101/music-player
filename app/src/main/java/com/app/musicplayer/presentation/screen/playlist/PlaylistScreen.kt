@@ -38,7 +38,7 @@ fun PlaylistScreen(
                 modifier = Modifier.background(
                     brush = Brush.verticalGradient(
                         0f to Color.Transparent,
-                        Float.POSITIVE_INFINITY to Color(0xFC000000)
+                        Float.POSITIVE_INFINITY to MaterialTheme.colorScheme.primary
                     )
                 )
             ){
@@ -133,7 +133,8 @@ fun PlaylistScreen(
                                 track = track,
                                 onClick = {clickedTrack ->
                                     onClickInTrack.invoke(clickedTrack)
-                                }
+                                },
+                                coverArtUri = playlist.coverArtUrl
                                 )
                         }
                     }

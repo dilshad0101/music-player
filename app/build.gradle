@@ -149,4 +149,9 @@ dependencies {
     // Common functionality used across multiple media libraries
     implementation "androidx.media3:media3-common:$media3_version"
 
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+
 }

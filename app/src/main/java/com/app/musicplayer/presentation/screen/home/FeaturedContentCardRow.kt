@@ -15,7 +15,6 @@ import com.app.musicplayer.presentation.utility.ImageLoader
 
 @Composable
 fun FeaturedContentCardRow(contentList : List<FeaturedContent>){
-
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(18.dp),
         contentPadding = PaddingValues(horizontal = Spacing.ContainerSpacing.value),

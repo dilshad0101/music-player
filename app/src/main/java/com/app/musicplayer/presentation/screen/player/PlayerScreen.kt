@@ -31,6 +31,7 @@ fun PlayerScreen(
     darkGradient: Brush,
     track: Track,
     playlistID: String,
+    albumCoverArt: String,
     onPlaybackStateChange:(Boolean) -> Unit,
     isPlaying: () -> Boolean,
     playbackPosition : () -> Long,
@@ -74,7 +75,7 @@ fun PlayerScreen(
                                     ambientColor = Color(0x40000000))
                         ){
                             ImageLoader(
-                                url = track.coverArtUrl,
+                                url = albumCoverArt,
                                 contentDescription = "cover art of song " + track.title,
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(10))
@@ -106,7 +107,7 @@ fun PlayerScreen(
                         style = MaterialTheme.typography.displayLarge
                     )
                     Text(
-                        track.artist,
+                        track.artist.joinToString(", ") { it.id },
                         style = MaterialTheme.typography.displaySmall
                     )
                     Spacer(modifier = Modifier.height(30.dp))

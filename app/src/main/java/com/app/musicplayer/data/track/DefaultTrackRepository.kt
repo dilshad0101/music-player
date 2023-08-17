@@ -6,13 +6,13 @@ import javax.inject.Inject
 class DefaultTrackRepository @Inject constructor(
     private val remoteDataSource: TrackRemoteTrackDataSource
 ): TrackRepository {
-    override suspend fun getTracks(): List<Track> {
+    override suspend fun getTracks(): List<Album> {
         return remoteDataSource.getTracks()
     }
 
 
     override suspend fun getTrack(id: Int): Track {
-        return remoteDataSource.getTrack(911)
+        return remoteDataSource.getTrack(id)
     }
 
 

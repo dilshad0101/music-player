@@ -4,14 +4,15 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import com.app.musicplayer.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -22,20 +23,21 @@ fun ImageLoader(url: String,
                 contentDescription: String,
                 quality: FilterQuality = FilterQuality.Low,
                 ){
-    val context = LocalContext.current
+
     AsyncImage(
         model = url,
         contentDescription = contentDescription,
         contentScale = ContentScale.Fit,
         modifier = modifier,
         filterQuality = quality,
+        placeholder = painterResource(id = R.drawable.albumcover_placeholder)
         )
 }
 
 suspend fun getBitmap(context: Context, link: String): Bitmap {
     return withContext(Dispatchers.IO) {
-        val url = URL(link)
         try {
+            val url = URL(link)
             val connection = url.openConnection() as HttpURLConnection
             connection.doInput = true
             connection.connect()

@@ -19,6 +19,7 @@ import com.app.musicplayer.presentation.utility.ImageLoader
 @Composable
 fun TrackCard(
     track: Track,
+    coverArtUri: String,
     onClick : (Track)-> Unit
 ){
     Card(
@@ -37,7 +38,7 @@ fun TrackCard(
                 horizontalArrangement = Arrangement.spacedBy(18.dp)
             ) {
                 ImageLoader(
-                    url = track.coverArtUrl,
+                    url = coverArtUri,
                     contentDescription = track.title,
                     quality = FilterQuality.Low,
                     modifier = Modifier

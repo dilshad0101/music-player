@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -79,13 +80,13 @@ fun HomeScreen(
     )
 
     Scaffold(
-        containerColor = Color.Black,
+        containerColor = MaterialTheme.colorScheme.primary,
         bottomBar = {
             Column(
                 modifier = Modifier.background(
                     brush = Brush.verticalGradient(
                         0f to Color.Transparent,
-                        Float.POSITIVE_INFINITY to Color(0xFC000000)
+                        Float.POSITIVE_INFINITY to MaterialTheme.colorScheme.primary
                     )
                 )
             ){
@@ -112,9 +113,6 @@ fun HomeScreen(
                             title = section.title,
                             albumList = section.albums,
                             onClick = { onAlbumClick.invoke(it) }
-//                            onClick = {
-//                                navController.navigate(NavigationRoute.PlaylistScreen.route + "/${it}")
-//                            }
                             )
                     }
                 }
