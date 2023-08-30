@@ -2,5 +2,7 @@
     <string name="app_name">Tune Cast</string>
     <string name="follow_button_text">Follow</string>
     <string name="SearchBar_placeHolder">Search Here</string>
-
+    <string name="BoardingScreen_app_description">Sign up now to unlock endless melodies and create your ultimate sound experience.</string>
+    <string name="TasteEditorScreen_title">Tailor Your Tunes</string>
+    <string name="TasteEditorScreen_description">Your journey to musical bliss starts here. Pick your preferred genres and artists, and we\'ll harmonize playlists to your preferences.</string>
 </resources>

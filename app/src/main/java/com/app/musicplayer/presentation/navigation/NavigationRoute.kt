@@ -34,6 +34,11 @@ sealed class NavigationRoute(
         iconOutlined = R.drawable.search,
         iconFilled = R.drawable.search_filled
     )
+    object TasteEditorScreen: NavigationRoute(
+        "screen6",
+        iconOutlined = R.drawable.search,
+        iconFilled = R.drawable.search_filled
+    )
 }
 
 

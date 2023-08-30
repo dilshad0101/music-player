@@ -30,7 +30,10 @@ fun ImageLoader(url: String,
         contentScale = ContentScale.Fit,
         modifier = modifier,
         filterQuality = quality,
-        placeholder = painterResource(id = R.drawable.albumcover_placeholder)
+        placeholder = painterResource(id = R.drawable.albumcover_placeholder),
+        onLoading = {
+
+        }
         )
 }
 

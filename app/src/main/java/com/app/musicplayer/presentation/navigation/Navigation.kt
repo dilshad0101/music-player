@@ -1,7 +1,5 @@
 package com.app.musicplayer.presentation.navigation
 
-import android.content.ComponentName
-import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,27 +8,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
-import androidx.media3.session.SessionToken
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.work.await
 import com.app.musicplayer.data.featuredContent.FeaturedContentViewModel
 import com.app.musicplayer.player.MediaPlayerViewModel
 import com.app.musicplayer.data.track.FetchTrackViewModel
-import com.app.musicplayer.player.PlaybackService
+import com.app.musicplayer.presentation.boarding.TasteProfileEditorScreen
 import com.app.musicplayer.presentation.screen.home.HomeScreen
 import com.app.musicplayer.presentation.screen.player.PlayerScreen
 import com.app.musicplayer.presentation.screen.playlist.PlaylistScreen
 import com.app.musicplayer.presentation.utility.dynamicGradient
-import com.google.common.util.concurrent.MoreExecutors
 
 @Composable
 fun Navigation(
@@ -41,9 +34,9 @@ fun Navigation(
     val navController = rememberNavController()
     val trackViewModel: FetchTrackViewModel = hiltViewModel()
     val playerViewModel = ViewModelProvider(viewModelStoreOwner)[MediaPlayerViewModel::class.java]
-    if (mediaController!=null){
-        playerViewModel.installController(mediaController)
-    }
+
+    playerViewModel.installController(mediaController)
+
     val player = playerViewModel.player
     val featuredContentViewModel: FeaturedContentViewModel = hiltViewModel()
     var isPlaying by remember{ mutableStateOf(false) }
@@ -54,7 +47,7 @@ fun Navigation(
 
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.HomeScreen.route
+        startDestination = NavigationRoute.TasteEditorScreen.route
     ){
         composable(NavigationRoute.HomeScreen.route){
             HomeScreen(
@@ -84,6 +77,13 @@ fun Navigation(
                 )
             }
 
+        }
+        composable(NavigationRoute.TasteEditorScreen.route){
+            TasteProfileEditorScreen(
+                onSubmit = {
+                    navController.navigate(NavigationRoute.HomeScreen.route)
+                }
+            )
         }
         composable(NavigationRoute.SearchScreen.route){
 

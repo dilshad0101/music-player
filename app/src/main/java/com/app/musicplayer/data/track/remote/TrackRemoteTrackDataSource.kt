@@ -16,8 +16,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class TrackRemoteTrackDataSource @Inject constructor() : TrackDataSource {
-    val storage = Firebase.storage.reference
-    override suspend fun getTracks()= suspendCoroutine<List<Album>> {continuation->
+    private val storage = Firebase.storage.reference
+    override suspend fun getTracks() = suspendCoroutine<List<Album>> { continuation->
         val albumsList:MutableList<Album> = mutableListOf()
         try{
             Firebase.firestore.collection(Constants.ALBUMS).get().addOnCompleteListener {task ->
@@ -26,9 +26,9 @@ class TrackRemoteTrackDataSource @Inject constructor() : TrackDataSource {
                     Log.d("5147th", albumTitle.toString())
                     val albumArtist = album.getString(Constants.ARTIST)
                     val albumId = album.getString(Constants.ID)
-                    var albumCoverArtUrlPath:String? = album.getString(Constants.COVER_ART)
+                    val albumCoverArtUrlPath:String? = album.getString(Constants.COVER_ART)
                     val trackList:MutableList<Track> = mutableListOf()
-                    var result2 = mutableListOf<Job>()
+                    val result2 = mutableListOf<Job>()
 
                     if(album.exists()){
                         album.reference.collection(Constants.TRACKS).get()
@@ -50,11 +50,11 @@ class TrackRemoteTrackDataSource @Inject constructor() : TrackDataSource {
                                         }
                                     }
                                     val trackTitle = track.getString(Constants.TITLE)
-                                    var trackUri = track.getString(Constants.TRACK_URI)
+                                    val trackUri = track.getString(Constants.TRACK_URI)
                                     Log.d("5147th", "${trackUri.isNullOrBlank()}" +"${trackTitle.isNullOrBlank()} ${albumTitle.isNullOrBlank()} ${albumCoverArtUrlPath.isNullOrBlank()} " )
                                     if (!trackTitle.isNullOrBlank() && !trackUri.isNullOrBlank() && !albumTitle.isNullOrBlank() && !albumCoverArtUrlPath.isNullOrBlank()){
                                         Log.d("5147th saved TRACK", trackUri.toString())
-                                        val result = CoroutineScope(Dispatchers.IO).launch(){
+                                        val result = CoroutineScope(Dispatchers.IO).launch{
                                             val url = storage.child(trackUri).downloadUrl.await()
                                             trackList.add(
                                                 Track(

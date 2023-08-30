@@ -14,9 +14,14 @@ class Application : Application(){
     override fun onCreate() {
         super.onCreate()
         val db = Firebase.firestore
-        val settings = FirebaseFirestoreSettings.Builder()
-            .build()
-        db.firestoreSettings = settings
-        FirebaseApp.initializeApp(applicationContext)
+        try{
+            val settings = FirebaseFirestoreSettings.Builder()
+                .build()
+            db.firestoreSettings = settings
+            FirebaseApp.initializeApp(applicationContext)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 }
