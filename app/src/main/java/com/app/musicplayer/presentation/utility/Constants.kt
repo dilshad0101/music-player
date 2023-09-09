@@ -8,7 +8,5 @@ object Constants {
     const val ID = "id"
     const val TITLE = "title"
     const val TRACK_URI = "trackUri"
-    const val ARTIST_1 = "artist1"
-    const val ARTIST_2 = "artist2"
-    const val ARTIST_3 = "artist3"
+    const val ATTRIBUTE = "attribute"
 }

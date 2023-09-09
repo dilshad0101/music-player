@@ -53,7 +53,7 @@ fun TrackCard(
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
-                        text = track.title,
+                        text = track.artist.joinToString(", ") { it.name },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.tertiary
                     )

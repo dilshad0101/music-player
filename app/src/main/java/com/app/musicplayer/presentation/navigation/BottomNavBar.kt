@@ -19,7 +19,7 @@ fun BottomNavBar(
     val destinations = listOf<NavigationRoute>(
         NavigationRoute.HomeScreen,
         NavigationRoute.SearchScreen,
-        NavigationRoute.PlaylistScreen,
+        NavigationRoute.LikedSongScreen,
         NavigationRoute.SettingsScreen
     )
 

@@ -9,10 +9,12 @@ class DefaultTrackRepository @Inject constructor(
     override suspend fun getTracks(): List<Album> {
         return remoteDataSource.getTracks()
     }
-
-
     override suspend fun getTrack(id: Int): Track {
         return remoteDataSource.getTrack(id)
+    }
+
+    override suspend fun requestTracks(key: String): MutableList<Track> {
+        return remoteDataSource.requestTracks(key)
     }
 
 

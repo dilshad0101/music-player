@@ -1,5 +1,6 @@
 package com.app.musicplayer.presentation.screen.playlist
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,6 +23,7 @@ import com.app.musicplayer.presentation.theme.Spacing
 import com.app.musicplayer.presentation.utility.ImageLoader
 import okio.utf8Size
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PlaylistScreen(
     playlist: Album,
@@ -44,7 +46,6 @@ fun PlaylistScreen(
             ){
                 BottomNavBar(navController)
             }
-
         }
     ) {
         Column(

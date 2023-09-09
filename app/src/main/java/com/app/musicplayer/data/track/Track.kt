@@ -7,7 +7,9 @@ data class Track(
     val album: String,
     val trackUrl: String,
     val lyricUrl: String?,
-    val albumId: String
+    val albumId: String,
+    val coverArtUrl: String?
+
 )
 
 data class Album(

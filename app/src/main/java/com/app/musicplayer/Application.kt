@@ -13,8 +13,8 @@ import dagger.hilt.android.HiltAndroidApp
 class Application : Application(){
     override fun onCreate() {
         super.onCreate()
-        val db = Firebase.firestore
         try{
+            val db = Firebase.firestore
             val settings = FirebaseFirestoreSettings.Builder()
                 .build()
             db.firestoreSettings = settings

@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
@@ -18,6 +19,7 @@ import androidx.media3.session.SessionToken
 import com.app.musicplayer.player.PlaybackService
 import com.app.musicplayer.presentation.navigation.Navigation
 import com.app.musicplayer.presentation.theme.MusicPlayerTheme
+import com.app.musicplayer.presentation.utility.PREFERENCE_NAME
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +33,6 @@ class MainActivity : ComponentActivity() {
     var player = mutableStateOf(controller)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             MusicPlayerTheme {
                 Surface(

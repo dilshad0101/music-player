@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Tune Cast</string>
+    <string name="PREFERENCE_NAME">PREFERENCE</string>
+    <string name="GENRE_PREFERENCE_KEY">GENRE</string>
     <string name="follow_button_text">Follow</string>
     <string name="SearchBar_placeHolder">Search Here</string>
     <string name="BoardingScreen_app_description">Sign up now to unlock endless melodies and create your ultimate sound experience.</string>

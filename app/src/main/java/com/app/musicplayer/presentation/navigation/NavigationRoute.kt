@@ -13,6 +13,11 @@ sealed class NavigationRoute(
         iconOutlined = R.drawable.home,
         iconFilled = R.drawable.home_filled
         )
+    object LikedSongScreen : NavigationRoute(
+        "likedSongScreen",
+        iconOutlined = R.drawable.heart,
+        iconFilled = R.drawable.heart_filled
+    )
     object PlaylistScreen : NavigationRoute(
         "screen2",
         iconOutlined = R.drawable.heart,

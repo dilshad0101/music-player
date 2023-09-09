@@ -66,7 +66,7 @@ fun PlayerScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                AnimatedContent(targetState = isLyricVisible) {state: Boolean ->
+                AnimatedContent(targetState = isLyricVisible, label = "") { state: Boolean ->
                     if (!state){
                         Box(
                             modifier = Modifier
@@ -87,7 +87,6 @@ fun PlayerScreen(
                             )
                         }
 
-
                     }else{
                         LyricsBox(
                             brush = lightGradient,
@@ -107,7 +106,7 @@ fun PlayerScreen(
                         style = MaterialTheme.typography.displayLarge
                     )
                     Text(
-                        track.artist.joinToString(", ") { it.id },
+                        track.artist.joinToString(", ") { it.name },
                         style = MaterialTheme.typography.displaySmall
                     )
                     Spacer(modifier = Modifier.height(30.dp))

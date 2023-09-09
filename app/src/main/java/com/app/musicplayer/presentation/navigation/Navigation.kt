@@ -1,5 +1,6 @@
 package com.app.musicplayer.presentation.navigation
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -23,14 +25,17 @@ import com.app.musicplayer.presentation.boarding.TasteProfileEditorScreen
 import com.app.musicplayer.presentation.screen.home.HomeScreen
 import com.app.musicplayer.presentation.screen.player.PlayerScreen
 import com.app.musicplayer.presentation.screen.playlist.PlaylistScreen
+import com.app.musicplayer.presentation.utility.GENRE_PREFERENCE_KEY
+import com.app.musicplayer.presentation.utility.PREFERENCE_NAME
 import com.app.musicplayer.presentation.utility.dynamicGradient
+import com.app.musicplayer.presentation.utility.editGenrePreference
 
 @Composable
 fun Navigation(
     mediaController: MediaController,
-    viewModelStoreOwner: ViewModelStoreOwner
+    viewModelStoreOwner: ViewModelStoreOwner,
 ) {
-
+    val context = LocalContext.current
     val navController = rememberNavController()
     val trackViewModel: FetchTrackViewModel = hiltViewModel()
     val playerViewModel = ViewModelProvider(viewModelStoreOwner)[MediaPlayerViewModel::class.java]
@@ -43,21 +48,26 @@ fun Navigation(
     val totalDuration = playerViewModel.totalDuration
     val track = playerViewModel.currentTrack.value
     val albumValue = playerViewModel.currentQueue.value
-
+    val userTasteId = LocalContext.current.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE).getString(
+        GENRE_PREFERENCE_KEY,null)
 
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.TasteEditorScreen.route
+        startDestination = if (userTasteId != null) NavigationRoute.HomeScreen.route else
+            NavigationRoute.TasteEditorScreen.route
     ){
         composable(NavigationRoute.HomeScreen.route){
+            trackViewModel.generatePersonalizedPlaylist(listOf(userTasteId))
             HomeScreen(
                 navController = navController,
                 featuredContents = featuredContentViewModel.featureContentList.value,
-                albums = trackViewModel.getAlbum(),
+                latestReleaseAlbums = trackViewModel.getAlbum(),
                 onAlbumClick = {
                     playerViewModel.currentQueue.value = it
                     navController.navigate(NavigationRoute.PlaylistScreen.route)
-                }
+                    Log.d("YAH0",trackViewModel.generatePersonalizedPlaylist(listOf(userTasteId)).toString())
+                },
+                personalizedPlaylists = trackViewModel.personalizedAlbum
             )
         }
         composable(
@@ -81,6 +91,8 @@ fun Navigation(
         composable(NavigationRoute.TasteEditorScreen.route){
             TasteProfileEditorScreen(
                 onSubmit = {
+                    editGenrePreference(context,it.genre)
+                    Log.d("TGG514", it.genre)
                     navController.navigate(NavigationRoute.HomeScreen.route)
                 }
             )

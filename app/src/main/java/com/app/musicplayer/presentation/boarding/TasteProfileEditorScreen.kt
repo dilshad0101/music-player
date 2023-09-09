@@ -151,9 +151,7 @@ fun TasteProfileEditorScreen(
                             when(tasteIdentifier.name){
                                       TasteIdentifingFactor.Genre.string -> {
                                           genreOption = if (genreOption == it.id) null else it.id
-                                          scope.launch{
-                                              scrollState.animateScrollTo(0)
-                                          }
+
                                       }
                                       TasteIdentifingFactor.Mood.string -> moodOption = if(moodOption == it.id) null else it.id
                                       TasteIdentifingFactor.Decade.string -> {
@@ -220,7 +218,7 @@ fun TasteProfileEditorScreen(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.secondary,
                 disabledContainerColor = MaterialTheme.colorScheme.tertiary,
-                disabledContentColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                disabledContentColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.82f)
             ),
             shape = RoundedCornerShape(10.dp)
             ) {
